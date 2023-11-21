@@ -1,4 +1,4 @@
-package management;
+package logic;
 
 import model.Guest;
 
@@ -28,14 +28,18 @@ public class HotelManagement {
             int roomNum = availableRoom.getAsInt() + ROOM_NUMBER_OFFSET;
 
             System.out.println("Enter guest name:");
-            String name = scanner.nextLine();
+            String name = scanner.nextLine().trim();
 
             System.out.println("Enter guest surname:");
-            String surname = scanner.nextLine();
+            String surname = scanner.nextLine().trim();
 
-            guests[availableRoom.getAsInt()] = new Guest(name, surname);
+            if (!name.isEmpty() && !surname.isEmpty()) {
+                guests[availableRoom.getAsInt()] = new Guest(name, surname);
 
-            System.out.printf("Registered as guest! Room number %d%n", roomNum);
+                System.out.printf("Registered as guest! Room number %d%n", roomNum);
+            } else {
+                System.out.println("Invalid input. Guest name and surname cannot be empty.");
+            }
         } else {
             System.out.println("All rooms are occupied! No more registrations allowed.");
         }
@@ -45,7 +49,7 @@ public class HotelManagement {
         System.out.println("Enter room number to check-out: ");
         int roomNumber = scanner.nextInt();
 
-        if (roomNumber >= 1 && roomNumber <= NUM_ROOMS) {
+        if (roomNumber >= ROOM_NUMBER_OFFSET && roomNumber <= NUM_ROOMS) {
             if (guests[roomNumber - ROOM_NUMBER_OFFSET] != null) {
                 System.out.printf("Checking out guest from room %d%n", roomNumber);
 
@@ -57,7 +61,7 @@ public class HotelManagement {
                 System.out.printf("Room %d is already empty.%n", roomNumber);
             }
         } else {
-            System.out.println("Invalid room number.");
+            System.out.println("Invalid room number. Please enter a valid room number.");
         }
     }
 
